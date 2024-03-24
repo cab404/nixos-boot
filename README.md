@@ -74,4 +74,4 @@ Enable nixos-boot in your configuration:
 
 The first theme, load & unload:
 
-![nixos logo loading and unloading](./src/load_unload.gif)
+![nixos logo loading and unloading](./doc/load_unload.gif)
