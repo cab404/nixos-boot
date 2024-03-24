@@ -25,17 +25,16 @@ in
   };
   options.nixos-boot.duration = lib.mkOption {
     type    = lib.types.float;
-    default = 1.0;
+    default = 0.0;
   };
-  config.nixpkgs.overlays = [(self: super: {
-    nixos-boot = super.callPackage ./default.nix {
-      theme   = config.nixos-boot.theme;
-      bgColor = toBG config.nixos-boot.bgColor;
-    };
-  })];
+  
   config.boot.plymouth = lib.mkIf config.nixos-boot.enable {
     enable = true;
-    themePackages = [ pkgs.nixos-boot ];
+    themePackages = [ (pkgs.callPackage ./default.nix {
+        theme   = config.nixos-boot.theme;
+        bgColor = toBG config.nixos-boot.bgColor;
+      }) 
+    ];
     theme = config.nixos-boot.theme;
   };
   config.systemd.services.plymouth-quit = lib.mkIf (config.nixos-boot.enable && config.nixos-boot.duration > 0.0) {
