@@ -25,8 +25,8 @@ state.status = "play";
 state.time = 0.0;
 
 // Amount of images - 1 as we start with 0
-image_quantity = 48;
-image_prefix = "nixos-";
+image_quantity = 120;
+image_prefix = "";
 
 //--------------------------------- Refresh (Logo animation) --------------------------
 
