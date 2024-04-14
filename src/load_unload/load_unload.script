@@ -2,6 +2,8 @@
 ## Github : @Melkor333
 ## Reddit : @Melkor333
 
+## edits by @cab404
+
 // Screen size
 screen.w = Window.GetWidth();
 screen.h = Window.GetHeight();
@@ -35,23 +37,19 @@ for (i = 0; i < image_quantity; i++)
   images[i] = Image(image_prefix + i + ".png");
 animation_sprite = Sprite();
 
-# set image position
-animation_sprite.SetX(Window.GetX() + (Window.GetWidth() / 2 - images[0].GetWidth() / 2)); # Place images in the center
-animation_sprite.SetY(Window.GetY() + (Window.GetHeight() / 2 - images[0].GetHeight() / 2));
-
-# Set background color to white
-Window.SetBackgroundTopColor (1, 1, 1);
-Window.SetBackgroundBottomColor (1, 1, 1);
+# set image position to lower right corner
+animation_sprite.SetX(Window.GetX() + (Window.GetWidth() - images[0].GetWidth() - 16));
+animation_sprite.SetY(Window.GetY() + (Window.GetHeight() - images[0].GetHeight() - 4));
 
 progress = 0;
 
-fun refresh_callback ()
-  {
-    animation_sprite.SetImage(images[Math.Int(progress / 2) % image_quantity]);
-    progress++;
-  }
+fun refresh_callback() {
+  animation_sprite.SetImage(images[Math.Int(progress / 2) % image_quantity]);
+  progress++;
+}
   
-Plymouth.SetRefreshFunction (refresh_callback);
+Plymouth.SetRefreshFunction(refresh_callback);
+
 
 //------------------------------------- Password prompt -------------------------------
 fun DisplayQuestionCallback(prompt, entry) {
@@ -63,31 +61,47 @@ fun DisplayQuestionCallback(prompt, entry) {
 
     question.image = Image.Text(prompt, 1, 1, 1);
     question.sprite = Sprite(question.image);
-    question.sprite.SetX(screen.half.w - question.image.GetWidth() / 2);
-    question.sprite.SetY(screen.h - 4 * question.image.GetHeight());
+    question.sprite.SetX(4);
+    question.sprite.SetY(4);
+    
+    # question.sprite.SetX(screen.half.w - question.image.GetWidth() / 2);
+    # question.sprite.SetY(screen.h - 4 * question.image.GetHeight());
 
     answer.image = Image.Text(entry, 1, 1, 1);
     answer.sprite = Sprite(answer.image);
-    answer.sprite.SetX(screen.half.w - answer.image.GetWidth() / 2);
-    answer.sprite.SetY(screen.h - 2 * answer.image.GetHeight());
+    answer.sprite.SetX(question.GetX());
+    answer.sprite.SetY(question.GetY() + question.GetHeight() + 4);
+    
+    # answer.sprite.SetX(screen.half.w - answer.image.GetWidth() / 2);
+    # answer.sprite.SetY(screen.h - 2 * answer.image.GetHeight());
 }
+
 Plymouth.SetDisplayQuestionFunction(DisplayQuestionCallback);
 
 //------------------------------------- Password prompt -------------------------------
 fun DisplayPasswordCallback(nil, bulletCount) {
     state.status = "pause";
     totalWidth = bulletCount * bullet.image.GetWidth();
-    startPos = screen.half.w - totalWidth / 2;
+    
+    startPos = 4; # screen.half.w - totalWidth / 2;
 
     prompt.image = Image.Text("Enter Password", 1, 1, 1);
     prompt.sprite = Sprite(prompt.image);
-    prompt.sprite.SetX(screen.half.w - prompt.image.GetWidth() / 2);
-    prompt.sprite.SetY(screen.h - 4 * prompt.image.GetHeight());
+
+    # prompt.sprite.SetX(screen.half.w - prompt.image.GetWidth() / 2);
+    # prompt.sprite.SetY(screen.h - 4 * prompt.image.GetHeight());
+    
+    prompt.sprite.SetX(4);
+    prompt.sprite.SetY(screen.h - 4);
+    
 
     // Clear all bullets (user might hit backspace)
     bullets = null;
     for (i = 0; i < bulletCount; i++) {
         bullets[i].sprite = Sprite(bullet.image);
+        prompt.sprite.SetX(4);
+        prompt.sprite.SetY(screen.h - 4);
+    
         bullets[i].sprite.SetX(startPos + i * bullet.image.GetWidth());
         bullets[i].sprite.SetY(screen.h - 2 * bullet.image.GetHeight());
     }
